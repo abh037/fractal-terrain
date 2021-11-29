@@ -2,55 +2,47 @@ float[] vertices = new float[3*(int)Math.pow(Math.pow(2, n) + 1, 2)];
 float[] colors = new float[3*(int)Math.pow(Math.pow(2, n) + 1, 2)];
 int[] indices = new int[6*(int)Math.pow(Math.pow(2, n) + 1, 2)];
 
-public VertexData Fractal(int n, float smoothness) {
-			VertexData vertexData = renderContext.makeVertexData((int)Math.pow(Math.pow(2, n) + 1, 2));
-			
-			int idx = 0;
-			
-			float[][] map = new float[(int)Math.pow(2, n) + 1][(int)Math.pow(2, n) + 1];
-			map[0][0] = 0f;
-			map[0][map.length - 1] = 0f;
-			map[map.length - 1][0] = 0f;
-			map[map.length - 1][map.length - 1] = 0f;
-			
-			map = diamondSquare(smoothness, map, new int[]{0, 0}, new int[]{map.length - 1, 0}, new int[]{0, map.length - 1}, new int[]{map.length - 1, map.length - 1});
-			
-			for (int i = 0; i < map.length; i++) {
-				for (int j = 0; j < map.length; j++) {
-					
-					float x = 3*((float)i - (map.length/2));
-					float y = map[i][j];
-					float z = 3*((float)j - (map.length/2));
-					
-					vertices[3*(i*(int)map.length + j) + 0] = x;
-					vertices[3*(i*(int)map.length + j) + 1] = y;
-					vertices[3*(i*(int)map.length + j) + 2] = z;
-					
-					colors[3*(i*(int)map.length + j) + 0] = .5f;
-					colors[3*(i*(int)map.length + j) + 1] = y / 2;
-					colors[3*(i*(int)map.length + j) + 2] = y / 2;
+public void Fractal(int n, float smoothness) {
 
-				}
-			}
-			
-			for (int i = 0; i < map.length - 1; i++) {
-				for (int j = 0; j < map.length - 1; j++) {
-					indices[6*(i*(int)map.length + j) + 0] = i*map.length + j;
-					indices[6*(i*(int)map.length + j) + 1] = i*map.length + j + 1;
-					indices[6*(i*(int)map.length + j) + 2] = i*map.length + j + map.length;
-					indices[6*(i*(int)map.length + j) + 3] = i*map.length + j + 1;
-					indices[6*(i*(int)map.length + j) + 4] = i*map.length + j + map.length;
-					indices[6*(i*(int)map.length + j) + 5] = i*map.length + j + map.length + 1;
-					
-				}
-			}
-			
-			vertexData.addElement(colors, VertexData.Semantic.COLOR, 3);
-			vertexData.addElement(vertices, VertexData.Semantic.POSITION, 3);
-			vertexData.addElement(normals, VertexData.Semantic.NORMAL, 3);
-			vertexData.addIndices(indices);
-			return vertexData;
-			
+	int idx = 0;
+
+	float[][] map = new float[(int)Math.pow(2, n) + 1][(int)Math.pow(2, n) + 1];
+	map[0][0] = 0f;
+	map[0][map.length - 1] = 0f;
+	map[map.length - 1][0] = 0f;
+	map[map.length - 1][map.length - 1] = 0f;
+
+	map = diamondSquare(smoothness, map, new int[]{0, 0}, new int[]{map.length - 1, 0}, new int[]{0, map.length - 1}, new int[]{map.length - 1, map.length - 1});
+
+	for (int i = 0; i < map.length; i++) {
+		for (int j = 0; j < map.length; j++) {
+
+			float x = 3*((float)i - (map.length/2));
+			float y = map[i][j];
+			float z = 3*((float)j - (map.length/2));
+
+			vertices[3*(i*(int)map.length + j) + 0] = x;
+			vertices[3*(i*(int)map.length + j) + 1] = y;
+			vertices[3*(i*(int)map.length + j) + 2] = z;
+
+			colors[3*(i*(int)map.length + j) + 0] = .5f;
+			colors[3*(i*(int)map.length + j) + 1] = y / 2;
+			colors[3*(i*(int)map.length + j) + 2] = y / 2;
+
+		}
+	}
+
+	for (int i = 0; i < map.length - 1; i++) {
+		for (int j = 0; j < map.length - 1; j++) {
+			indices[6*(i*(int)map.length + j) + 0] = i*map.length + j;
+			indices[6*(i*(int)map.length + j) + 1] = i*map.length + j + 1;
+			indices[6*(i*(int)map.length + j) + 2] = i*map.length + j + map.length;
+			indices[6*(i*(int)map.length + j) + 3] = i*map.length + j + 1;
+			indices[6*(i*(int)map.length + j) + 4] = i*map.length + j + map.length;
+			indices[6*(i*(int)map.length + j) + 5] = i*map.length + j + map.length + 1;
+
+		}
+	}		
 }
 		
 public float[][] diamondSquare(float smoothness, float[][] arr, int[] left_t, int[] right_t, int[] left_b, int[] right_b) {
